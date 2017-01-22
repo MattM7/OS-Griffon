@@ -1,7 +1,7 @@
 package gdx.griffon.tiles;
 
 import com.badlogic.gdx.maps.MapObject;
-import com.badlogic.gdx.physics.box2d.*;
+import com.badlogic.gdx.physics.box2d.World;
 import gdx.griffon.utils.TiledObjectUtil;
 
 public class DestructibleTile extends TiledObjectUtil {

@@ -11,8 +11,8 @@ import static gdx.griffon.utils.Constants.fPPM;
 
 public class SpriteExtended extends Sprite {
 
-    public int nNumJumps = 2;
-    World world;
+    private int nNumJumps = 2;
+    private World world;
     private float fX, fY; // just for original spawn points, or last alive point when we reset for deaths
     private String sFile;
     private Texture txImg;
@@ -23,17 +23,16 @@ public class SpriteExtended extends Sprite {
     private Texture txSheet;
     private TextureRegion trTemp;
     private int nFrame;
-    public boolean isMoving;
+    private float fLeft, fRight;
+    private ScrPlay scrPlay;
+    private int nShootDelay;
     public Body body;
     public int nDir, nPos; // nDir: 1 is Left, 2 is Right; nPos: 7 is left, 0 is right
-    float fLeft, fRight;
-    ScrPlay scrPlay;
     public int nShootCounter = 0;
-    public int nShootDelay;
     public boolean bDead = false;
-    public String sName;
+    public boolean isMoving;
 
-    //------------------------------------ CONSTRUCTOR ----------------------------------------
+    //------------------------------------ HERO'S CONSTRUCTOR ----------------------------------------
     public SpriteExtended(String _sFile, float _fX, float _fY, int _nShootDelay, World _world, ScrPlay _scrPlay) {
         world = _world;
         createBoxBody(world, _fX, _fY);
@@ -60,9 +59,9 @@ public class SpriteExtended extends Sprite {
             }
             araniPlayer[i] = new Animation(10f, arSprPlayer);
         }
-        sName = "Hero";
     }
 
+    //------------------------------------ ENEMY'S CONSTRUCTOR ----------------------------------------
     public SpriteExtended(String _sFile, float _fX, float _fY, float _fLeft, float _fRight, int _nShootDelay, World _world, ScrPlay _scrPlay) {
         world = _world;
         createBoxBody(world, _fX, _fY);
@@ -80,8 +79,8 @@ public class SpriteExtended extends Sprite {
         araniPlayer = new Animation[8];
         fW = txSheet.getWidth() / 8;
         fH = txSheet.getHeight() / 8;
-        fLeft = _fLeft / fPPM;
-        fRight = _fRight / fPPM;
+        fLeft = _fLeft / fPPM; // max left
+        fRight = _fRight / fPPM; // max right
         for (int i = 0; i < 8; i++) {
             Sprite[] arSprPlayer = new Sprite[8];
             for (int j = 0; j < 8; j++) {
@@ -92,13 +91,13 @@ public class SpriteExtended extends Sprite {
             }
             araniPlayer[i] = new Animation(10f, arSprPlayer);
         }
-        sName = "Enemy";
     }
 
     //------------------------------------ DEATH ----------------------------------------
     public void death() {
         this.bDead = false;
-        reset();
+        world.destroyBody(body);
+        //reset();
     }
 
     public void shoot() {
@@ -107,48 +106,63 @@ public class SpriteExtended extends Sprite {
                 scrPlay.alBullets.add(new Bullet("bullet.png", this.getX(), this.getY() + this.getSprite().getHeight() / 2, world, this.nDir));
             } else if (this.nDir == 2) {
                 scrPlay.alBullets.add(new Bullet("bullet.png", this.getX() + this.getSprite().getWidth(), this.getY() + this.getSprite().getHeight() / 2, world, this.nDir));
-
             }
             nShootCounter = 0;
         }
     }
 
     //------------------------------------ AI SHOOTING ----------------------------------------
-    public void aiShooting(float fPlayersY, float fPlayersX) {
-      /*  System.out.println("playerY" + fPlayersY);
-        System.out.println("playerX" + fPlayersX);*/
-        if (fPlayersY < body.getPosition().y + 3 && fPlayersY > body.getPosition().y - 3 && fPlayersX > body.getPosition().x - 10 && fPlayersX < body.getPosition().x + 10) {
-            shoot();
-        }
+    public boolean aiShooting(float fPlayersY, float fPlayersX, int nDir) {
+        /*  System.out.println("playerY" + fPlayersY);
+         System.out.println("playerX" + fPlayersX);*/
         nShootCounter++;
+        if (fPlayersY < body.getPosition().y + 1 && fPlayersY > body.getPosition().y - 1 && fPlayersX > body.getPosition().x - 5 && fPlayersX < body.getPosition().x + 5) {
+            shoot();
+            return true;
+        }
+
+        return false;
     }
 
     //------------------------------------ AI MOVEMENT ----------------------------------------
     public void aiMovement(float fPlayersY, float fPlayersX) {
-        animate();
-        aiShooting(fPlayersY, fPlayersX);
-        if (body.getPosition().x <= fLeft) {
-            nPos = 0;
-            nDir = 2;
-        } else if (body.getPosition().x >= fRight) {
-            nPos = 7;
-            nDir = 1;
-        }
 
-        if (nDir == 1) {
-            body.setLinearVelocity(-3, body.getLinearVelocity().y);
+        if (aiShooting(fPlayersY, fPlayersX, nDir)) {
+            body.setLinearVelocity(0, body.getLinearVelocity().y);
+            if (fPlayersX < body.getPosition().x) {
+                nDir = 1;
+                nPos = 7;
+                nFrame = 0;
+                //System.out.println("Shoot to the left");
+
+            } else {
+                nDir = 2;
+                nPos = 0;
+                nFrame = 0;
+                //System.out.println("Shoot to the right");
+
+            }
+            animate();
         } else {
-            body.setLinearVelocity(3, body.getLinearVelocity().y);
-        }/*
-        System.out.println("X" + fX);
-        System.out.println("fLeft" + fLeft);
-        System.out.println("fRight" + fRight);*/
-    }
+            animate();
+            if (body.getPosition().x <= fLeft) {
+                nPos = 0;
+                nDir = 2;
+            } else if (body.getPosition().x >= fRight) {
+                nPos = 7;
+                nDir = 1;
+            }
 
-    //------------------------------------ RESET ----------------------------------------
-    private void reset() {
-        world.destroyBody(body);
-        createBoxBody(world, fX, fY);
+            if (nDir == 1) {
+                body.setLinearVelocity(-3, body.getLinearVelocity().y);
+            } else {
+                body.setLinearVelocity(3, body.getLinearVelocity().y);
+            }
+        }/*
+                  System.out.println("fLeft" + fLeft);
+         System.out.println("fRight" + fRight);
+        System.out.println("fX " + body.getPosition().x);
+        System.out.println("fPlayersX " + fPlayersX);*/
     }
 
     //------------------------------------ JUMP ----------------------------------------

@@ -7,7 +7,7 @@ import gdx.griffon.screens.ScrMenu;
 import gdx.griffon.screens.ScrOptions;
 import gdx.griffon.screens.ScrPlay;
 
-public class GamFrosch extends Game {
+public class GamGriffon extends Game {
 
     private ScrMenu scrMenu;
     private ScrPlay scrPlay;

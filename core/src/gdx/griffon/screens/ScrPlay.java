@@ -14,6 +14,7 @@ package gdx.griffon.screens;
  - Removing a Tile: http://www.java-gaming.org/index.php?topic=35160.0
  - http://gamedev.stackexchange.com/questions/74821/libgdx-how-do-you-remove-a-cell-from-tiledmap
  */
+
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
@@ -31,7 +32,9 @@ import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
-import gdx.griffon.*;
+import gdx.griffon.Bullet;
+import gdx.griffon.GamGriffon;
+import gdx.griffon.SpriteExtended;
 import gdx.griffon.tiles.*;
 import gdx.griffon.utils.CameraStyleUtil;
 import gdx.griffon.utils.ContactListenerUtil;
@@ -54,7 +57,7 @@ public class ScrPlay extends ApplicationAdapter implements Screen {
     private MapObjects objectsSpawnPoints;
     private Iterator<MapObject> objectIterator;
     private int nLevelWidth, nLevelHeight, nTileSize;
-    private GamFrosch game;
+    private GamGriffon game;
     private SpriteBatch batch;
     private SpriteExtended sprExtHero;
     private SpriteExtended sprAI1;
@@ -64,13 +67,13 @@ public class ScrPlay extends ApplicationAdapter implements Screen {
     private Mushrooms mushrooms;
     private boolean bRenderLights = false; // easy for testing the game
     public ArrayList<Bullet> alBullets;
+    public ArrayList<SpriteExtended> alsprextEnemies;
     private ArrayList<DestructibleTile> alDestructibleTiles;
     private ArrayList<FallingTile> alFallingTiles;
     private TiledMapTileLayer tiledMapLayerDestructible;
-    double dZoom; // for camera, later?
 
     //------------------------------------ CONSTRUCTOR ----------------------------------------
-    public ScrPlay(GamFrosch _game) {
+    public ScrPlay(GamGriffon _game) {
         reset();
         game = _game;
     }
@@ -91,6 +94,7 @@ public class ScrPlay extends ApplicationAdapter implements Screen {
         nLevelHeight = mapProp.get("height", Integer.class);
         nTileSize = mapProp.get("tilewidth", Integer.class);
 
+        alsprextEnemies = new ArrayList<SpriteExtended>();
         objectsSpawnPoints = tiledMap.getLayers().get("SpawnPoint").getObjects();
         objectIterator = objectsSpawnPoints.iterator();
         while (objectIterator.hasNext()) {
@@ -102,10 +106,10 @@ public class ScrPlay extends ApplicationAdapter implements Screen {
                 nY = object.getProperties().get("y", float.class).intValue();
             }
             if (object.getProperties().get("toSpawn").equals("Enemy")) {
-                // System.out.println("FOUND THE BADGUY");
+                // System.out.println("FOUND A BADGUY");
                 nXai1 = object.getProperties().get("x", float.class).intValue();
                 nYai1 = object.getProperties().get("y", float.class).intValue();
-
+                alsprextEnemies.add(new SpriteExtended("Vlad.png", nXai1, nYai1, nXai1, nXai1 + 100, 70, world, this));
             }
         }
         platforms = new Platforms();
@@ -119,7 +123,6 @@ public class ScrPlay extends ApplicationAdapter implements Screen {
         batch = new SpriteBatch();
 
         sprExtHero = new SpriteExtended("Vlad.png", nX, nY, 10, world, this);
-        sprAI1 = new SpriteExtended("Vlad.png", nXai1, nYai1, nXai1, nXai1 + 100, 70, world, this);
         lights = new Lights(world, sprExtHero.body);
         alBullets = new ArrayList<Bullet>();
         alDestructibleTiles = new ArrayList<DestructibleTile>();
@@ -151,7 +154,9 @@ public class ScrPlay extends ApplicationAdapter implements Screen {
         tiledMapRenderer.render();
         batch.begin();
         batch.draw(sprExtHero.getSprite(), sprExtHero.getX(), sprExtHero.getY());
-        batch.draw(sprAI1.getSprite(), sprAI1.getX(), sprAI1.getY());
+        for (SpriteExtended sprExtEnemy : alsprextEnemies) {
+            batch.draw(sprExtEnemy.getSprite(), sprExtEnemy.getX(), sprExtEnemy.getY());
+        }
         for (Bullet bullet : alBullets) {
             batch.draw(bullet.getSprite(), bullet.getX(), bullet.getY());
         }
@@ -163,7 +168,6 @@ public class ScrPlay extends ApplicationAdapter implements Screen {
         if (bRenderLights) {
             lights.renderLights();
         }
-        // System.out.println(sprExtHero.body.getPosition().scl(fPPM));
     }
 
     //------------------------------------ RESIZE ----------------------------------------
@@ -197,11 +201,7 @@ public class ScrPlay extends ApplicationAdapter implements Screen {
             batch.setProjectionMatrix(ocCam.combined);
             lights.update(ocCam);
             sprExtHero.setPosition(sprExtHero.body.getPosition().x * fPPM - (sprExtHero.getSprite().getWidth() / 2), sprExtHero.body.getPosition().y * fPPM - (sprExtHero.getSprite().getHeight() / 2));
-            sprAI1.setPosition(sprAI1.body.getPosition().x * fPPM - (sprAI1.getSprite().getWidth() / 2), sprAI1.body.getPosition().y * fPPM - (sprAI1.getSprite().getHeight() / 2));
-            sprAI1.aiMovement(sprExtHero.body.getPosition().y, sprExtHero.body.getPosition().x);
-            if (sprAI1.bDead) {
-                sprAI1.death();
-            }
+            enemyUpdate();
         }
     }
 
@@ -281,6 +281,19 @@ public class ScrPlay extends ApplicationAdapter implements Screen {
         for (FallingTile fallingTile : alFallingTiles) {
             fallingTile.activate(0, -5);
             fallingTile.setPos();
+        }
+    }
+
+    //------------------------------------ ENEMY UPDATE ----------------------------------------
+    private void enemyUpdate() {
+        for (int i = alsprextEnemies.size() - 1; i >= 0; i--) {
+            SpriteExtended sprextEnemy = alsprextEnemies.get(i);
+            sprextEnemy.setPosition(sprextEnemy.body.getPosition().x * fPPM - (sprextEnemy.getSprite().getWidth() / 2), sprextEnemy.body.getPosition().y * fPPM - (sprextEnemy.getSprite().getHeight() / 2));
+            sprextEnemy.aiMovement(sprExtHero.body.getPosition().y, sprExtHero.body.getPosition().x);
+            if (sprextEnemy.bDead) {
+                sprextEnemy.death();
+                alsprextEnemies.remove(sprextEnemy);
+            }
         }
     }
 

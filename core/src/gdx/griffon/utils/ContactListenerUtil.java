@@ -9,8 +9,8 @@ package gdx.griffon.utils;
 import com.badlogic.gdx.physics.box2d.*;
 import gdx.griffon.Bullet;
 import gdx.griffon.SpriteExtended;
-import gdx.griffon.tiles.*;
 import gdx.griffon.screens.ScrPlay;
+import gdx.griffon.tiles.*;
 
 public class ContactListenerUtil implements ContactListener {
 
@@ -34,7 +34,7 @@ public class ContactListenerUtil implements ContactListener {
             return;
         }
         // System.out.println("Collision!");
-        if (isSpriteExtContactPlatforms(a, b) || isSpriteExtContactMushrooms(a, b) || isSpriteExtContactDestructible(a, b)) {
+        if (isSpriteExtContactPlatforms(a, b) || isSpriteExtContactMushrooms(a, b) || isSpriteExtContactDestructible(a, b) || isSpriteExtContactSpriteExt(a, b)) {
             resetJump(a, b);
         } else if (isSpriteExtContactMoving(a, b)) {
             SpriteExtended sprDude;
@@ -56,7 +56,7 @@ public class ContactListenerUtil implements ContactListener {
                 sprDude = (SpriteExtended) a.getUserData();
             }
             sprDude.bDead = true;
-        } else if (isBulletContactMushroom(a, b) || isBulletContactPlatform(a, b) || isBulletContactFalling(a, b)) {
+        } else if (isBulletContactMushroom(a, b) || isBulletContactPlatform(a, b) || isBulletContactFalling(a, b) || isBulletContactSpike(a, b)) {
             destroyBullet(a, b);
         } else if (isBulletContactSprite(a, b)) {
             SpriteExtended sprDude;
@@ -113,8 +113,9 @@ public class ContactListenerUtil implements ContactListener {
             sprDude = (SpriteExtended) a.getUserData();
         }
         sprDude.resetJump();
-    }//------------------------------------ DESTROY BULLET ----------------------------------------
+    }
 
+    //------------------------------------ DESTROY BULLET ----------------------------------------
     private void destroyBullet(Fixture a, Fixture b) {
         Bullet bullet;
         try {
@@ -123,6 +124,11 @@ public class ContactListenerUtil implements ContactListener {
             bullet = (Bullet) a.getUserData();
         }
         scrPlay.destroyBullet(bullet);
+    }
+
+    //------------------------------------ IS SPRITE CONTACT SPRITE ----------------------------------------
+    private boolean isSpriteExtContactSpriteExt(Fixture a, Fixture b) {
+        return a.getUserData() instanceof SpriteExtended && b.getUserData() instanceof SpriteExtended;
     }
 
     //------------------------------------ IS SPRITE CONTACT MOVING ----------------------------------------
@@ -187,12 +193,21 @@ public class ContactListenerUtil implements ContactListener {
 
     //------------------------------------ IS BULLET CONTACT BULLET ----------------------------------------
     private boolean isBulletContactBullet(Fixture a, Fixture b) {
-        return a.getUserData() instanceof Bullet || b.getUserData() instanceof Bullet;
+        return a.getUserData() instanceof Bullet && b.getUserData() instanceof Bullet;
     }
 
     //------------------------------------ IS BULLET CONTACT PLATFORM ----------------------------------------
     private boolean isBulletContactPlatform(Fixture a, Fixture b) {
         if (a.getUserData() instanceof Platforms || b.getUserData() instanceof Platforms) {
+            if (a.getUserData() instanceof Bullet || b.getUserData() instanceof Bullet) {
+                return true;
+            }
+        }
+        return false;
+    }//------------------------------------ IS BULLET CONTACT SPIKE ----------------------------------------
+
+    private boolean isBulletContactSpike(Fixture a, Fixture b) {
+        if (a.getUserData() instanceof Spikes || b.getUserData() instanceof Spikes) {
             if (a.getUserData() instanceof Bullet || b.getUserData() instanceof Bullet) {
                 return true;
             }

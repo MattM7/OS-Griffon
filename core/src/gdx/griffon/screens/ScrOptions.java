@@ -9,12 +9,12 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
-import gdx.griffon.GamFrosch;
+import gdx.griffon.GamGriffon;
 import gdx.griffon.TbMenu;
 import gdx.griffon.TbsMenu;
 
 public class ScrOptions implements Screen, InputProcessor {
-    private GamFrosch game;
+    private GamGriffon game;
     private TbsMenu tbsMenu;
     private TbMenu tbBack;
     private Stage stage;
@@ -22,7 +22,7 @@ public class ScrOptions implements Screen, InputProcessor {
     private BitmapFont screenName;
 
     //------------------------------------ CONSTRUCTOR ----------------------------------------
-    public ScrOptions(GamFrosch _game) {  //Referencing the main class.
+    public ScrOptions(GamGriffon _game) {  //Referencing the main class.
         game = _game;
     }
 

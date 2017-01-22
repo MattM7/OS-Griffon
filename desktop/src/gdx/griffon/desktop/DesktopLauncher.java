@@ -2,11 +2,11 @@ package gdx.griffon.desktop;
 
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
-import gdx.griffon.GamFrosch;
+import gdx.griffon.GamGriffon;
 
 public class DesktopLauncher {
 	public static void main (String[] arg) {
 		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
-		new LwjglApplication(new GamFrosch(), config);
+		new LwjglApplication(new GamGriffon(), config);
 	}
 }

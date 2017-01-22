@@ -8,8 +8,9 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.physics.box2d.World;
-import static gdx.griffon.utils.Constants.fPPM;
 import gdx.griffon.utils.TiledObjectUtil;
+
+import static gdx.griffon.utils.Constants.fPPM;
 
 public class FallingTile extends TiledObjectUtil {
     public boolean bHit;

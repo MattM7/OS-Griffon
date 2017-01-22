@@ -9,12 +9,12 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
-import gdx.griffon.GamFrosch;
+import gdx.griffon.GamGriffon;
 import gdx.griffon.TbMenu;
 import gdx.griffon.TbsMenu;
 
 public class ScrGameover implements Screen, InputProcessor {
-    private GamFrosch game;
+    private GamGriffon game;
     private TbsMenu tbsMenu;
     private TbMenu tbPlay, tbMenu;
     private Stage stage;
@@ -22,7 +22,7 @@ public class ScrGameover implements Screen, InputProcessor {
     private BitmapFont screenName;
 
     //------------------------------------ CONSTRUCTOR ----------------------------------------
-    public ScrGameover(GamFrosch _game) {  //Referencing the main class.
+    public ScrGameover(GamGriffon _game) {  //Referencing the main class.
         game = _game;
     }
 
