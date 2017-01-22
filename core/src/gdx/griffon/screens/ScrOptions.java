@@ -1,4 +1,4 @@
-package gdx.frosch.screens;
+package gdx.griffon.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
@@ -9,20 +9,20 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
-import gdx.frosch.GamFrosch;
-import gdx.frosch.TbMenu;
-import gdx.frosch.TbsMenu;
+import gdx.griffon.GamFrosch;
+import gdx.griffon.TbMenu;
+import gdx.griffon.TbsMenu;
 
-public class ScrGameover implements Screen, InputProcessor {
+public class ScrOptions implements Screen, InputProcessor {
     private GamFrosch game;
     private TbsMenu tbsMenu;
-    private TbMenu tbPlay, tbMenu;
+    private TbMenu tbBack;
     private Stage stage;
     private SpriteBatch batch;
     private BitmapFont screenName;
 
     //------------------------------------ CONSTRUCTOR ----------------------------------------
-    public ScrGameover(GamFrosch _game) {  //Referencing the main class.
+    public ScrOptions(GamFrosch _game) {  //Referencing the main class.
         game = _game;
     }
 
@@ -32,17 +32,12 @@ public class ScrGameover implements Screen, InputProcessor {
         tbsMenu = new TbsMenu();
         batch = new SpriteBatch();
         screenName = new BitmapFont();
-        tbPlay = new TbMenu("PLAY", tbsMenu);
-        tbMenu = new TbMenu("MENU", tbsMenu);
-        tbPlay.setY(0);
-        tbPlay.setX(440);
-        tbMenu.setY(0);
-        tbMenu.setX(0);
-        stage.addActor(tbMenu);
-        stage.addActor(tbPlay);
+        tbBack = new TbMenu("BACK", tbsMenu);
+        tbBack.setY(0);
+        tbBack.setX(440);
+        stage.addActor(tbBack);
         Gdx.input.setInputProcessor(stage);
-        btnMenuListener();
-        btnPlayListener();
+        btnBackListener();
     }
 
     //------------------------------------ RENDER ----------------------------------------
@@ -50,28 +45,18 @@ public class ScrGameover implements Screen, InputProcessor {
         Gdx.gl.glClearColor(0, 0, 0, 1); //black background.
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         batch.begin();
-        screenName.draw(batch, "Gameover", 230, 275);
+        screenName.draw(batch, "OPTIONS: For Later Release", 230, 275);
         batch.end();
         stage.act();
         stage.draw();
     }
 
-    //------------------------------------ BTN MENU LISTENER ----------------------------------------
-    private void btnMenuListener() {
-        tbMenu.addListener(new ChangeListener() {
+    //------------------------------------ BTN BACK LISTENER ----------------------------------------
+    private void btnBackListener() {
+        tbBack.addListener(new ChangeListener() {
             public void changed(ChangeEvent event, Actor actor) {
 
                 game.updateState(0);
-            }
-        });
-    }
-
-    //------------------------------------ BTN PLAY LISTENER ----------------------------------------
-    private void btnPlayListener() {
-        tbPlay.addListener(new ChangeListener() {
-            public void changed(ChangeEvent event, Actor actor) {
-
-                game.updateState(2);
             }
         });
     }

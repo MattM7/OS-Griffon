@@ -1,6 +1,6 @@
-package gdx.frosch.tiles;
+package gdx.griffon.tiles;
 
-import gdx.frosch.utils.TiledObjectUtil;
+import gdx.griffon.utils.TiledObjectUtil;
 
 public class Spikes extends TiledObjectUtil {
 

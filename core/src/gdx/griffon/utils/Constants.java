@@ -1,4 +1,4 @@
-package gdx.frosch.utils;
+package gdx.griffon.utils;
 
 public class Constants {
     public static final float fPPM = 32;  // pixels per meter: when giving Box2D units, divide by fPPM

@@ -1,11 +1,11 @@
-//3.2 Fourtress - removable tiles
-package gdx.frosch;
+//?.? Griffon - AI Enemies
+package gdx.griffon;
 
 import com.badlogic.gdx.Game;
-import gdx.frosch.screens.ScrGameover;
-import gdx.frosch.screens.ScrMenu;
-import gdx.frosch.screens.ScrOptions;
-import gdx.frosch.screens.ScrPlay;
+import gdx.griffon.screens.ScrGameover;
+import gdx.griffon.screens.ScrMenu;
+import gdx.griffon.screens.ScrOptions;
+import gdx.griffon.screens.ScrPlay;
 
 public class GamFrosch extends Game {
 
@@ -18,14 +18,22 @@ public class GamFrosch extends Game {
     //------------------------------------ UPDATE STATE ----------------------------------------
     public void updateState(int _nScreen) {
         nScreen = _nScreen;
-        if (nScreen == 0) {
-            setScreen(scrMenu);
-        } else if (nScreen == 1) {
-            setScreen(scrOptions);
-        } else if (nScreen == 2) {
-            setScreen(scrPlay);
-        } else if (nScreen == 3) {
-            setScreen(scrGameover);
+        switch (nScreen) {
+            case 0:
+                setScreen(scrMenu);
+                break;
+            case 1:
+                setScreen(scrOptions);
+                break;
+            case 2:
+                scrPlay.reset();
+                setScreen(scrPlay);
+                break;
+            case 3:
+                setScreen(scrGameover);
+                break;
+            default:
+                break;
         }
     }
 //------------------------------------ CREATE ----------------------------------------

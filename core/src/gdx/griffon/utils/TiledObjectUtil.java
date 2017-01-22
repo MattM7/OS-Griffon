@@ -4,7 +4,7 @@ SOURCES
 - Converting tiled object to box2d shapes http://gamedev.stackexchange.com/questions/66924/how-can-i-convert-a-tilemap-to-a-box2d-world
 - Parsing a Tiled file to a Box2d World: https://www.youtube.com/watch?v=BcbjBEnIWKU
 */
-package gdx.frosch.utils;
+package gdx.griffon.utils;
 
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.MapObjects;
@@ -16,7 +16,7 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 
-import static gdx.frosch.utils.Constants.fPPM;
+import static gdx.griffon.utils.Constants.fPPM;
 
 public class TiledObjectUtil {
 

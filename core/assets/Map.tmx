@@ -10,7 +10,7 @@
  </layer>
  <layer name="Midground" width="32" height="32">
   <data encoding="base64" compression="zlib">
-   eJztlckNwjAQRSduIizpg7UOSKAPtgqADqC0QCFsB94NCRnFRHgipHnSO9rfkv/YIoZhGMY3TJzIFHMsnH7+gswlrnCNmw9n+JdzGnpcEpFr0lx+iw60I/e1h30ceBziCMeedb/sa46FxxnO628bzAG3b+5wj0eF/Jik7qUmdXsVQslMnvBcMZuxenUj946PivxYvepwl13MGvgjYt5rKPZeGNo8AdPrL/I=
+   eJztlMkNwjAQRSepgq2PhKUAKoAE+mCrAOgASgMKYcmBd+CAIqOYiDECzZPe0f4j+Y9FDMMwjHcYxSJjzDCPw+fPyJzjApe4ejHDr8xphOMciVyi7+U36EBTua8Jpth12MM+DhznPtnXDHOHE5zWv9abHa5LbnCL+wD5/0jdXvlwYCePeKrYTa1eXcm9YVGRr9WrFrvWxs5j54ZPaqP5rr7Yf2GE5g4iIzB/
   </data>
  </layer>
  <layer name="Foreground" width="32" height="32">
@@ -46,21 +46,21 @@
   </object>
  </objectgroup>
  <objectgroup name="SpawnPoint">
-  <object id="44" name="player" x="192" y="768" width="32" height="32">
+  <object id="44" name="player" x="128" y="768" width="32" height="32">
    <properties>
     <property name="toSpawn" value="Hero"/>
    </properties>
   </object>
-  <object id="45" name="badguy" x="416" y="640" width="32" height="32">
+  <object id="45" name="badguy" x="480" y="640" width="32" height="32">
    <properties>
     <property name="toSpawn" value="Enemy"/>
    </properties>
   </object>
  </objectgroup>
  <objectgroup name="DestructibleTiles">
-  <object id="103" x="448" y="672" width="32" height="32"/>
-  <object id="104" x="480" y="672" width="32" height="32"/>
-  <object id="105" x="512" y="672" width="32" height="32"/>
+  <object id="103" x="224" y="800" width="32" height="32"/>
+  <object id="104" x="256" y="800" width="32" height="32"/>
+  <object id="105" x="288" y="800" width="32" height="32"/>
  </objectgroup>
  <objectgroup name="FallingTiles">
   <object id="106" x="640" y="608" width="32" height="32"/>

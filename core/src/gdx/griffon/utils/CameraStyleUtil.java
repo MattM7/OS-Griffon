@@ -1,4 +1,4 @@
-package gdx.frosch.utils;
+package gdx.griffon.utils;
 /*
  SOURCES
  - camera boundries and other Camera Styles https://www.youtube.com/watch?v=Lb2vZ5lBgCY

@@ -1,13 +1,10 @@
-package gdx.frosch;
+package gdx.griffon;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.maps.objects.CircleMapObject;
-import com.badlogic.gdx.math.Circle;
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 
-import static gdx.frosch.utils.Constants.fPPM;
+import static gdx.griffon.utils.Constants.fPPM;
 
 public class Bullet extends Sprite {
 
@@ -26,9 +23,9 @@ public class Bullet extends Sprite {
         sprImg = new Sprite(txImg);
         bDead = false;
         if (nDir == 1) {
-            nHorizontalForce = -5;
+            nHorizontalForce = -9;
         } else if (nDir == 2) {
-            nHorizontalForce = 5;
+            nHorizontalForce = 9;
         }
         body.setLinearVelocity(0, 0);
     }

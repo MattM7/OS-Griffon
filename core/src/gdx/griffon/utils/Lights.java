@@ -1,4 +1,4 @@
-package gdx.frosch.utils;
+package gdx.griffon.utils;
 /*
 SOURCES
 - Conner Anderson’s lights lessons: https://www.youtube.com/watch?v=p024Ix0I8W0&list=PLD_bW3UTVsEmdPDSc_XAjID5h9VB2Ocn8
@@ -11,7 +11,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.World;
 
-import static gdx.frosch.utils.Constants.fPPM;
+import static gdx.griffon.utils.Constants.fPPM;
 
 public class Lights {
 

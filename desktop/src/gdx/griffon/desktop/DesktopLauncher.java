@@ -1,8 +1,8 @@
-package gdx.frosch.desktop;
+package gdx.griffon.desktop;
 
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
-import gdx.frosch.GamFrosch;
+import gdx.griffon.GamFrosch;
 
 public class DesktopLauncher {
 	public static void main (String[] arg) {

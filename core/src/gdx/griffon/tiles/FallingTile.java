@@ -1,4 +1,4 @@
-package gdx.frosch.tiles;
+package gdx.griffon.tiles;
 /*
 * SOURCES
 * Kinematic Bodies, for falling platforms: http://www.emanueleferonato.com/2012/05/11/understanding-box2d-kinematic-bodies/
@@ -8,8 +8,8 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.physics.box2d.World;
-import static gdx.frosch.utils.Constants.fPPM;
-import gdx.frosch.utils.TiledObjectUtil;
+import static gdx.griffon.utils.Constants.fPPM;
+import gdx.griffon.utils.TiledObjectUtil;
 
 public class FallingTile extends TiledObjectUtil {
     public boolean bHit;
